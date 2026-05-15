@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2pinballflipper"]
+
+[ext_resource type="Script" path="res://scripts/flipper.gd" id="1_flipper"]
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_flipper"]
+points = PackedVector2Array(0, -12, 88, -7, 92, 0, 88, 7, 0, 12)
+
+[node name="Flipper" type="AnimatableBody2D"]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_flipper")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("ConvexPolygonShape2D_flipper")
+
+[node name="Visual" type="Polygon2D" parent="."]
+color = Color(0.95, 0.2, 0.3, 1)
+polygon = PackedVector2Array(0, -12, 88, -7, 92, 0, 88, 7, 0, 12)
+
+[node name="Knob" type="Polygon2D" parent="."]
+color = Color(1, 1, 1, 0.4)
+polygon = PackedVector2Array(0, -12, 8, -10, 10, 0, 8, 10, 0, 12, -8, 10, -10, 0, -8, -10)

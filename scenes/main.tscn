@@ -1,0 +1,192 @@
+[gd_scene load_steps=15 format=3 uid="uid://b4pinballmain"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="PackedScene" uid="uid://b2pinballflipper" path="res://scenes/flipper.tscn" id="2_flipper"]
+[ext_resource type="PackedScene" uid="uid://b3pinballbumper" path="res://scenes/bumper.tscn" id="3_bumper"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_top"]
+size = Vector2(720, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_left"]
+size = Vector2(20, 1080)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_right"]
+size = Vector2(20, 1080)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_slant"]
+size = Vector2(268, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_plunger_wall"]
+size = Vector2(12, 1080)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_walls"]
+friction = 0.0
+bounce = 0.15
+
+[sub_resource type="LabelSettings" id="LabelSettings_score"]
+font_size = 36
+font_color = Color(1, 0.95, 0.6, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_info"]
+font_size = 20
+font_color = Color(0.9, 0.9, 0.95, 1)
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font_size = 28
+font_color = Color(0.95, 0.3, 0.45, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud"]
+bg_color = Color(0, 0, 0, 0.45)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+
+[node name="Background" type="Polygon2D" parent="."]
+color = Color(0.11, 0.13, 0.2, 1)
+polygon = PackedVector2Array(0, 0, 720, 0, 720, 1280, 0, 1280)
+
+[node name="PlayfieldGlow" type="Polygon2D" parent="."]
+position = Vector2(360, 600)
+color = Color(0.18, 0.22, 0.32, 1)
+polygon = PackedVector2Array(-280, -560, 280, -560, 280, 480, 100, 640, -100, 640, -280, 480)
+
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+physics_material_override = SubResource("PhysicsMaterial_walls")
+
+[node name="TopWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(360, 10)
+shape = SubResource("RectangleShape2D_top")
+
+[node name="LeftWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(10, 560)
+shape = SubResource("RectangleShape2D_left")
+
+[node name="RightWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(710, 560)
+shape = SubResource("RectangleShape2D_right")
+
+[node name="LeftSlant" type="CollisionShape2D" parent="Walls"]
+position = Vector2(140, 1140)
+rotation = 0.4636476
+shape = SubResource("RectangleShape2D_slant")
+
+[node name="RightSlant" type="CollisionShape2D" parent="Walls"]
+position = Vector2(580, 1140)
+rotation = -0.4636476
+shape = SubResource("RectangleShape2D_slant")
+
+[node name="PlungerWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(654, 560)
+shape = SubResource("RectangleShape2D_plunger_wall")
+
+[node name="WallVisuals" type="Node2D" parent="."]
+
+[node name="TopWallVisual" type="Polygon2D" parent="WallVisuals"]
+color = Color(0.4, 0.42, 0.5, 1)
+polygon = PackedVector2Array(0, 0, 720, 0, 720, 20, 0, 20)
+
+[node name="LeftWallVisual" type="Polygon2D" parent="WallVisuals"]
+color = Color(0.4, 0.42, 0.5, 1)
+polygon = PackedVector2Array(0, 20, 20, 20, 20, 1100, 0, 1100)
+
+[node name="RightWallVisual" type="Polygon2D" parent="WallVisuals"]
+color = Color(0.4, 0.42, 0.5, 1)
+polygon = PackedVector2Array(700, 20, 720, 20, 720, 1100, 700, 1100)
+
+[node name="LeftSlantVisual" type="Polygon2D" parent="WallVisuals"]
+color = Color(0.4, 0.42, 0.5, 1)
+polygon = PackedVector2Array(20, 1080, 260, 1200, 260, 1212, 20, 1100)
+
+[node name="RightSlantVisual" type="Polygon2D" parent="WallVisuals"]
+color = Color(0.4, 0.42, 0.5, 1)
+polygon = PackedVector2Array(700, 1080, 460, 1200, 460, 1212, 700, 1100)
+
+[node name="PlungerWallVisual" type="Polygon2D" parent="WallVisuals"]
+color = Color(0.4, 0.42, 0.5, 1)
+polygon = PackedVector2Array(648, 20, 660, 20, 660, 1100, 648, 1100)
+
+[node name="Bumpers" type="Node2D" parent="."]
+
+[node name="Bumper1" parent="Bumpers" instance=ExtResource("3_bumper")]
+position = Vector2(220, 480)
+
+[node name="Bumper2" parent="Bumpers" instance=ExtResource("3_bumper")]
+position = Vector2(440, 480)
+bumper_color = Color(0.3, 0.7, 0.95, 1)
+
+[node name="Bumper3" parent="Bumpers" instance=ExtResource("3_bumper")]
+position = Vector2(330, 660)
+bumper_color = Color(0.95, 0.85, 0.3, 1)
+points = 150
+
+[node name="Flippers" type="Node2D" parent="."]
+
+[node name="LeftFlipper" parent="Flippers" instance=ExtResource("2_flipper")]
+position = Vector2(245, 1200)
+is_left = true
+
+[node name="RightFlipper" parent="Flippers" instance=ExtResource("2_flipper")]
+position = Vector2(435, 1200)
+is_left = false
+
+[node name="BallSpawn" type="Marker2D" parent="."]
+position = Vector2(680, 140)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Margin" type="MarginContainer" parent="HUD"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 110.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 18
+
+[node name="VBox" type="VBoxContainer" parent="HUD/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TitleLabel" type="Label" parent="HUD/Margin/VBox"]
+layout_mode = 2
+text = "BERKZITTI PINBALL"
+label_settings = SubResource("LabelSettings_title")
+horizontal_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="HUD/Margin/VBox"]
+layout_mode = 2
+text = "SCORE  0000000"
+label_settings = SubResource("LabelSettings_score")
+horizontal_alignment = 1
+
+[node name="InfoLabel" type="Label" parent="HUD/Margin/VBox"]
+layout_mode = 2
+text = "SPACE to launch  -  A / D flippers"
+label_settings = SubResource("LabelSettings_info")
+horizontal_alignment = 1
+
+[node name="HUDBackground" type="Panel" parent="HUD"]
+z_index = -1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = -12.0
+offset_bottom = 118.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud")
