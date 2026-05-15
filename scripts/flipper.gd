@@ -22,5 +22,5 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var target := _active_rad if Input.is_action_pressed(_action) else _rest_rad
-	rotation = lerp_angle(rotation, target, clamp(flip_speed * delta, 0.0, 1.0))
+	var target: float = _active_rad if Input.is_action_pressed(_action) else _rest_rad
+	rotation = lerp_angle(rotation, target, clampf(flip_speed * delta, 0.0, 1.0))

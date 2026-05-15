@@ -11,6 +11,6 @@ func _draw() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	var speed := linear_velocity.length()
+	var speed: float = linear_velocity.length()
 	if speed > max_speed:
 		linear_velocity = linear_velocity / speed * max_speed

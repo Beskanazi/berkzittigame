@@ -14,15 +14,15 @@ func _ready() -> void:
 
 
 func _draw() -> void:
-	var pulse := clamp(_flash_t / 0.12, 0.0, 1.0)
-	var outer := bumper_color.lerp(Color(1, 1, 1), pulse)
+	var pulse: float = clampf(_flash_t / 0.12, 0.0, 1.0)
+	var outer: Color = bumper_color.lerp(Color(1, 1, 1), pulse)
 	draw_circle(Vector2.ZERO, radius + pulse * 4.0, outer)
 	draw_circle(Vector2.ZERO, radius, Color(0, 0, 0, 0.35), false, 2.0)
 	draw_circle(Vector2.ZERO, radius * 0.55, outer.lightened(0.4))
 
 
 func _process(delta: float) -> void:
-	_flash_t = max(0.0, _flash_t - delta)
+	_flash_t = maxf(0.0, _flash_t - delta)
 	queue_redraw()
 	if _flash_t == 0.0:
 		set_process(false)
@@ -31,11 +31,12 @@ func _process(delta: float) -> void:
 func _on_body_entered(body: Node) -> void:
 	if not (body is RigidBody2D):
 		return
-	var offset := body.global_position - global_position
-	var dir := offset.normalized() if offset.length() > 0.01 else Vector2.UP
-	body.linear_velocity = dir * force
-	var main := get_tree().get_first_node_in_group("main")
+	var ball: RigidBody2D = body
+	var offset: Vector2 = ball.global_position - global_position
+	var dir: Vector2 = offset.normalized() if offset.length() > 0.01 else Vector2.UP
+	ball.linear_velocity = dir * force
+	var main: Node = get_tree().get_first_node_in_group("main")
 	if main and main.has_method("add_score"):
-		main.add_score(points)
+		main.call("add_score", points)
 	_flash_t = 0.12
 	set_process(true)
